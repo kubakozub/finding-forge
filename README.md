@@ -1,5 +1,7 @@
 # finding-forge
 
+[![tests](https://github.com/kubakozub/finding-forge/actions/workflows/tests.yml/badge.svg)](https://github.com/kubakozub/finding-forge/actions/workflows/tests.yml)
+
 **Turn a verified finding into a clean, complete, submission-ready report — with accurate CVSS 3.1 scoring and a pre-submit lint that catches missing sections and leaked secrets.**
 
 `finding-forge` encodes one rule of good bug-bounty work: **one clean, reproducible report beats ten noisy ones.** It scaffolds the sections triagers actually read, scores severity with a CVSS v3.1 implementation that matches the FIRST calculator to the decimal, and gates your draft before you paste it into HackerOne or Bugcrowd so a stray `Authorization:` header or an empty *Steps to Reproduce* never goes out under your name.
