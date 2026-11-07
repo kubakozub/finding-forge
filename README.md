@@ -183,6 +183,57 @@ It pairs naturally with a **redaction step** in front of the lint: run your traf
 
 ---
 
+## A worked example
+
+[`examples/wordpress-media-finalize.md`](examples/wordpress-media-finalize.md) is a finished
+report for a real finding: HackerOne [#3931777](https://hackerone.com/reports/3931777), a
+CVSS 9.9 in WordPress core where the lowest role allowed to upload files could delete
+`wp-config.php`, and a WordPress without `wp-config.php` hands its installer to anyone. It
+was resolved and paid, and it is written in the shape this tool produces.
+
+It is worth reading for two things the template cannot supply for you. The first is the
+severity argument: the report states *why* Scope is Changed rather than asserting a number,
+and gives the score both ways so a triager can disagree in one step.
+
+```console
+$ finding-forge cvss "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H"
+Vector      : CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H
+Base score  : 9.9
+Severity    : Critical
+
+$ finding-forge cvss "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+Base score  : 8.8
+Severity    : High
+```
+
+The second is the impact chain. The finding on its own is an arbitrary file deletion, which
+is serious but not a 9.9. What earns the score is the sentence after it: with that file gone,
+the installer answers 200 on a site that was already configured. A report that stops at the
+defect leaves the triager to discover the consequence, and a triager who has to do that work
+is a triager who downgrades.
+
+The example passes the gate, including under `--strict`:
+
+```console
+$ finding-forge lint --strict examples/wordpress-media-finalize.md
+Sections
+  [PASS] Title - Author can delete wp-config.php through ...ller
+  [PASS] Summary - present
+  ...
+CVSS
+  [PASS] CVSS vector - CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H = 9.9 (Critical)
+
+Result: PASS - 0 error(s), 0 warning(s) (--strict: warnings fail the gate)
+```
+
+The proof-of-concept section carries the request shape but not the traversal string. That is
+deliberate: the example exists to show what a finished report looks like, and an exploit
+primitive for a patched core bug adds nothing to that. The detections for the same chain,
+with the log lines that should and should not fire them, are in
+[detections](https://github.com/kubakozub/detections).
+
+---
+
 ## Development
 
 ```bash
