@@ -344,7 +344,7 @@ CLASSES = {
             "GET /<TODO: path> HTTP/1.1\n"
             "Host: <TODO: target host>\n"
             "```\n"
-            "Response contains `<TODO: field names>` — redact the actual secret "
+            "Response contains `<TODO: field names>`. Redact the actual secret "
             "values in the report and reference them by placeholder."
         ),
         "remediation": (
@@ -363,7 +363,7 @@ CLASSES = {
         "title_hint": "<Vulnerability class> in <asset>",
         "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
         "summary": (
-            "`<TODO: one or two sentences — what the flaw is, where it lives, and "
+            "`<TODO: one or two sentences, what the flaw is, where it lives, and "
             "the security property it breaks>`."
         ),
         "impact": (
@@ -377,7 +377,7 @@ CLASSES = {
         ],
         "poc": (
             "`<TODO: exact request/response, script, or screenshot reference "
-            "proving the issue — keep it minimal and reproducible; redact "
+            "proving the issue, keep it minimal and reproducible; redact "
             "secrets>`"
         ),
         "remediation": (
@@ -422,7 +422,7 @@ def render(bug_type, title=None):
     parts = [
         "# %s" % heading,
         "",
-        "> Bug class: **%s** — DRAFT. Fill every `<TODO: ...>`, redact real"
+        "> Bug class: **%s**. DRAFT. Fill every `<TODO: ...>`, redact real"
         " secrets, and delete this banner before submitting." % spec["name"],
         "",
         _render_section("Summary", spec["summary"]),

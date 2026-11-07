@@ -2,7 +2,7 @@
 
 [![tests](https://github.com/kubakozub/finding-forge/actions/workflows/tests.yml/badge.svg)](https://github.com/kubakozub/finding-forge/actions/workflows/tests.yml)
 
-**Turn a verified finding into a clean, complete, submission-ready report — with accurate CVSS 3.1 scoring and a pre-submit lint that catches missing sections and leaked secrets.**
+**Turn a verified finding into a clean, complete, submission-ready report, with accurate CVSS 3.1 scoring and a pre-submit lint that catches missing sections and leaked secrets.**
 
 `finding-forge` encodes one rule of good bug-bounty work: **one clean, reproducible report beats ten noisy ones.** It scaffolds the sections triagers actually read, scores severity with a CVSS v3.1 implementation that matches the FIRST calculator to the decimal, and gates your draft before you paste it into HackerOne or Bugcrowd so a stray `Authorization:` header or an empty *Steps to Reproduce* never goes out under your name.
 
@@ -14,11 +14,11 @@
 
 ## Why report quality is the whole game
 
-Triage is a queue. A report that is missing a repro, hand-waves impact, or forces the triager to guess your CVSS gets bounced to *Needs More Info* — and every round-trip is days of latency and a dent in your signal. A report that lands complete on the first read gets triaged fast, scored fairly, and paid. `finding-forge` removes the three things that most often go wrong:
+Triage is a queue. A report that is missing a repro, hand-waves impact, or forces the triager to guess your CVSS gets bounced to *Needs More Info*, and every round-trip is days of latency and a dent in your signal. A report that lands complete on the first read gets triaged fast, scored fairly, and paid. `finding-forge` removes the three things that most often go wrong:
 
-1. **Missing structure** — you forget a section under time pressure. The template won't let you.
-2. **Wrong severity** — hand-computed CVSS is error-prone; a wrong vector invites a downgrade. The math here is exact.
-3. **Leaked material** — you paste real traffic into the PoC and ship a live token or a customer's PII. The lint catches it first.
+1. **Missing structure**, you forget a section under time pressure. The template won't let you.
+2. **Wrong severity**: hand-computed CVSS is error-prone; a wrong vector invites a downgrade. The math here is exact.
+3. **Leaked material**, you paste real traffic into the PoC and ship a live token or a customer's PII. The lint catches it first.
 
 ---
 
@@ -40,7 +40,7 @@ python -m finding_forge --help
 
 ## Usage
 
-### 1. `new` — scaffold a report
+### 1. `new`: scaffold a report
 
 ```bash
 finding-forge new --type idor --title "IDOR in /api/invoices lets users read others' invoices" -o report.md
@@ -60,12 +60,12 @@ Supported bug-class templates:
 | `info-disclosure`        | Sensitive Information Disclosure                  |
 | `generic`                | Anything else (neutral skeleton)                  |
 
-Every template emits the same skeleton triagers expect — **Title, Summary, Affected Asset, CVSS, Impact, Steps to Reproduce, Proof of Concept, Remediation, References** — pre-filled with class-specific hints and a *suggested* CVSS vector that is scored live:
+Every template emits the same skeleton triagers expect (**Title, Summary, Affected Asset, CVSS, Impact, Steps to Reproduce, Proof of Concept, Remediation, References**), pre-filled with class-specific hints and a *suggested* CVSS vector that is scored live:
 
 ```markdown
 # IDOR in <endpoint> allows reading/modifying other users' <object>
 
-> Bug class: **IDOR / Broken Object-Level Authorization** — DRAFT. Fill every `<TODO: ...>`, redact real secrets, and delete this banner before submitting.
+> Bug class: **IDOR / Broken Object-Level Authorization**. DRAFT. Fill every `<TODO: ...>`, redact real secrets, and delete this banner before submitting.
 
 ## Summary
 
@@ -81,7 +81,7 @@ requested object. Any authenticated user can read `<TODO: describe object>` ...
 
 Fill in every `<TODO: ...>`, drop in your PoC, and you have a report. Placeholders are written so the linter can spot anything you left behind.
 
-### 2. `cvss` — score or build a vector
+### 2. `cvss`: score or build a vector
 
 Score an existing vector string:
 
@@ -113,9 +113,9 @@ $ finding-forge cvss "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N" --json
 }
 ```
 
-The base-score math follows the FIRST CVSS v3.1 specification exactly — including the scope-changed impact term and the integer-scaled `Roundup` function — and is unit-tested against the official calculator for a spread of canonical vectors (7.5 High, 9.8 / 10.0 Critical, 6.1 Medium, 3.1 Low, 0.0 None, and more).
+The base-score math follows the FIRST CVSS v3.1 specification exactly, including the scope-changed impact term and the integer-scaled `Roundup` function, and is unit-tested against the official calculator for a spread of canonical vectors (7.5 High, 9.8 / 10.0 Critical, 6.1 Medium, 3.1 Low, 0.0 None, and more).
 
-### 3. `lint` — the pre-submit gate
+### 3. `lint`: the pre-submit gate
 
 ```console
 $ finding-forge lint report.md
@@ -141,18 +141,18 @@ Result: FAIL - 5 error(s), 2 warning(s)
 
 `lint` checks three things:
 
-- **Completeness** — every expected section is present and non-empty (placeholder-only sections don't count).
-- **Secrets & PII** — leaked JWTs, AWS/GitHub/Slack/Google/Stripe keys, private-key blocks, `Authorization` / `Cookie` / Bearer / Basic-auth headers with real values, high-entropy strings, unredacted emails, and Luhn-valid card numbers. Redacted placeholders (`<token>`, `$SESSION`, `example.com`) are recognised and left alone, so a properly sanitised report stays quiet.
-- **Quality** — a CVSS vector is present and actually parses, repro steps are enumerated, and there's no vague filler (`might`, `could possibly`, ...) or leftover `<TODO>`.
+- **Completeness**, every expected section is present and non-empty (placeholder-only sections don't count).
+- **Secrets & PII**: leaked JWTs, AWS/GitHub/Slack/Google/Stripe keys, private-key blocks, `Authorization` / `Cookie` / Bearer / Basic-auth headers with real values, high-entropy strings, unredacted emails, and Luhn-valid card numbers. Redacted placeholders (`<token>`, `$SESSION`, `example.com`) are recognised and left alone, so a properly sanitised report stays quiet.
+- **Quality**, a CVSS vector is present and actually parses, repro steps are enumerated, and there's no vague filler (`might`, `could possibly`, ...) or leftover `<TODO>`.
 
 ### How the gate works
 
 | Level     | Meaning                                              | Exit code                          |
 |-----------|------------------------------------------------------|------------------------------------|
-| **error** | Hard problem: missing section, leaked secret, no CVSS | non-zero — **blocks submission**   |
+| **error** | Hard problem: missing section, leaked secret, no CVSS | non-zero, **blocks submission**   |
 | **warn**  | Worth a look: email/PII, filler, leftover `<TODO>`    | zero by default; non-zero with `--strict` |
 
-Use it as a real gate — for example in a pre-commit hook or CI:
+Use it as a real gate: for example in a pre-commit hook or CI:
 
 ```bash
 finding-forge lint report.md --strict || {
@@ -179,7 +179,7 @@ Add `--json` for tooling and `--quiet` to show only problems.
   └───────────────┘
 ```
 
-It pairs naturally with a **redaction step** in front of the lint: run your traffic captures through a redactor to strip live tokens and PII, then let `finding-forge lint` act as the backstop that fails the submission if anything slipped through. The lint is deliberately your *seatbelt*, not your only line of defence — you should never be relying on it to notice the secret, but you'll be glad it does.
+It pairs naturally with a **redaction step** in front of the lint: run your traffic captures through a redactor to strip live tokens and PII, then let `finding-forge lint` act as the backstop that fails the submission if anything slipped through. The lint is deliberately your *seatbelt*, not your only line of defence, you should never be relying on it to notice the secret, but you'll be glad it does.
 
 ---
 

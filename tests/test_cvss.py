@@ -8,7 +8,7 @@ import unittest
 
 from finding_forge import cvss
 
-# (vector, expected_score, expected_severity) — verified against FIRST.
+# (vector, expected_score, expected_severity): verified against FIRST.
 CANONICAL = [
     # The textbook 7.5 example (unauth confidentiality-only, network).
     ("CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N", 7.5, "High"),

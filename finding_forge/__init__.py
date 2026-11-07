@@ -1,4 +1,4 @@
-"""finding-forge — turn a verified finding into a submission-ready report.
+"""finding-forge: turn a verified finding into a submission-ready report.
 
 Public modules:
     cvss       Accurate CVSS v3.1 base-score math (parse / build / score).

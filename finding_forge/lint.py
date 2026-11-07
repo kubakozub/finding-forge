@@ -10,7 +10,7 @@ Three families of checks, printed as a concise checklist:
 
 Errors fail the gate (non-zero exit). Warnings pass by default and fail
 under ``--strict`` (recommended for CI). Everything is regex + a little
-Shannon entropy — no network, no external dependencies.
+Shannon entropy: no network, no external dependencies.
 """
 
 from __future__ import annotations

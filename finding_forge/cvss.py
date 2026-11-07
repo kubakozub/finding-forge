@@ -3,7 +3,7 @@
 The equations follow the FIRST *CVSS v3.1 Specification*, section 7.1
 (Base Metrics Equations) and Appendix A (the ``Roundup`` function).  Every
 number here is verified against the official FIRST calculator for the
-canonical vectors exercised in ``tests/test_cvss.py`` — do not "simplify"
+canonical vectors exercised in ``tests/test_cvss.py``, do not "simplify"
 the Roundup or the scope-changed impact term; they are deliberately exact.
 """
 
@@ -144,7 +144,7 @@ def format_vector(metrics):
 # --------------------------------------------------------------------------
 
 def _roundup(value):
-    """CVSS v3.1 ``Roundup`` (Appendix A) — matches the FIRST calculator.
+    """CVSS v3.1 ``Roundup`` (Appendix A): matches the FIRST calculator.
 
     Rounds *up* to one decimal place, but leaves values that are already at
     one decimal untouched.  Implemented on integers scaled by 100000 to
